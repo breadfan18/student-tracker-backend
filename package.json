@@ -7,17 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/breadfan18/student-tracker-backend.git"
+
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/breadfan18/student-tracker-backend/issues"
-  },
-  "homepage": "https://github.com/breadfan18/student-tracker-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

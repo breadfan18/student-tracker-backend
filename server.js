@@ -1,24 +1,37 @@
-// Instantiate express and other apps
-const express = require("express")
-const app = express()
-require("dotenv").config()
-const { PORT = 3001, DATABASE_URL, SECRET } = process.env
-const mongoose = require("mongoose")
-const cors = require("cors")
-const morgan = require("morgan")
+// Dependencies
 
-//Connect with mongo
-mongoose.connect(process.env.DATABASE_URL);
-const db = mongoose.connection;
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const morgan = require('morgan');
 
-// Setup mongo event listeners
-db.on('connected', () => console.log('Connected to MongoDB'));
-db.on('error', (error) => console.log(`Mongo Error: ${error.message}`));
+// Initialize the app
+const app = express();
+require('dotenv').config();
 
-// Mount middleware
-app.use(cors()) // to prevent cors errors, open access to all origins
-app.use(express.json()) // parse json bodies
-app.use(morgan("dev")) // logging
+const { PORT = 4000, DATABASE_URL } = process.env;
 
-// Listener
-app.listen(PORT, () => console.log(`App is listening on port ${PORT}`))
+// Configure middleware
+app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
+
+// Configure routes
+app.use('/api/students', require('./controllers/students'));
+app.use('/api/instructors', require('./controllers/instructors'));
+app.use('/api/homeworks', require('./controllers/homeworks'));
+app.use('/api/feedbacks', require('./controllers/feedbacks'));
+
+// Configure database connection
+mongoose.connect(DATABASE_URL, { useNewUrlParser: true });
+db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+    console.log('Connected to database');
+});
+
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
