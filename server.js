@@ -1,5 +1,4 @@
 // Dependencies
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,9 +6,11 @@ const morgan = require('morgan');
 
 // Initialize the app
 const app = express();
-require('dotenv').config();
 
-const { PORT = 4000, DATABASE_URL } = process.env;
+// Configure the app
+require('dotenv').config();
+const PORT = process.env.PORT || 3001;
+const DATABASE_URL = process.env.DATABASE_URL || 'mongodb+srv://admin:abc1234@cluster0.7o8mj.mongodb.net/ga-students?retryWrites=true&w=majority';
 
 // Configure middleware
 app.use(express.json());
@@ -29,7 +30,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
     console.log('Connected to database');
 });
-
 
 // Start the server
 app.listen(PORT, () => {

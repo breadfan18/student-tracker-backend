@@ -4,9 +4,32 @@ studentsRouter = express.Router();
 
 const Student = require('../models/student');
 
+// Firebase Admin SDK
+const admin = require('firebase-admin');
+const serviceAccount = require('../service-account-credentials.json');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+})
+
+// Check if the user is authenticated
+async function isAuthenticated(req, res, next) {
+    try {
+        const token = req.get('Authorization');
+        if (!token) throw new Error('No token found, please login');
+        const user = await admin.auth().verifyIdToken(token.replace('Bearer ', ''));
+        if (!user) throw new Error('Something went wrong, invalid token');
+        req.user = user;
+        next();
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
 // SEED DATA
 const seedData = [
     {
+        uid:  'abc123',
         name: 'John Doe',
         email: 'john@email.com',
         computer_info: 'Macbook Pro',
@@ -20,6 +43,7 @@ const seedData = [
         homework_completion_percentage: 80,
     },
     {
+        uid:  'def456',
         name: 'Jane Doe',
         email: 'jane@email.com',
         computer_info: 'Macbook Pro',
@@ -34,9 +58,11 @@ const seedData = [
     }
 ];
 
-studentsRouter.get('/seed', (req, res) => {
+// SEED Route
+studentsRouter.get('/seed', async (req, res) => {
     // Delete all students
-    Student.deleteMany({})
+    await Student.deleteMany({});
+    // Create new students
     Student.create(seedData, (err, data) => {
         if (err) {
             console.log(err);
@@ -46,9 +72,9 @@ studentsRouter.get('/seed', (req, res) => {
     })
 });
 
-
 // Create/POST a new student
 studentsRouter.post('/', (req, res, next) => {
+    console.log(req.body, 'is req body post')
     const student = new Student(req.body);
     student.save((err, student) => {
         if (err) {

@@ -7,11 +7,13 @@ const Instructor = require('../models/instructor');
 // SEED DATA
 const seedData = [
     {
+        uid: '123456789',
         name: 'Instructor 1',
         email: 'instructor1@email.com',
         students: [],
     },
     {
+        uid: '987654321',
         name: 'Instructor 2',
         email: 'instructor2@email.com',
         students: [],
