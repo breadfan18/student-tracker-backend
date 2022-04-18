@@ -7,6 +7,24 @@ const Homework = require('../models/homework');
 // SEED DATA
 const seedData = [
     // TO DO: Add seed data for homework
+    {
+        assignment: 'Homework 1',
+        due_date: '2019-01-01',
+        completed: false,
+        student_id: '6258cf69d9b42d90f282d711',
+    },
+    {
+        assignment: 'Homework 2',
+        due_date: '2019-01-01',
+        completed: false,
+        student_id: '6258cf69d9b42d90f282d711',
+    },
+    {
+        assignment: 'Homework 3',
+        due_date: '2019-01-01',
+        completed: false,
+        student_id: '6258cf69d9b42d90f282d711',
+    }
 ];
 
 homeworksRouter.get('/seed', async (req, res) => {
