@@ -85,6 +85,16 @@ studentsRouter.post('/', (req, res, next) => {
     });
 })
 
+// Read/GET all students
+studentsRouter.get('/all', (req, res, next) => {
+    Student.find((err, students) => {
+        if (err) {
+            res.status(500);
+            return next(err);
+        }
+        return res.status(200).send(students);
+    });
+});
 
 // GET STUDENT BY UID
 studentsRouter.get('/', (req, res, next) => {
@@ -95,17 +105,6 @@ studentsRouter.get('/', (req, res, next) => {
             return next(err);
         }
         return res.status(200).send(student);
-    });
-});
-
-// Read/GET all students
-studentsRouter.get('/all', (req, res, next) => {
-    Student.find((err, students) => {
-        if (err) {
-            res.status(500);
-            return next(err);
-        }
-        return res.status(200).send(students);
     });
 });
 
