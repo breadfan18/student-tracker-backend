@@ -85,8 +85,21 @@ studentsRouter.post('/', (req, res, next) => {
     });
 })
 
-// Read/GET all students
+
+// GET STUDENT BY UID
 studentsRouter.get('/', (req, res, next) => {
+    console.log('its hitting this route')
+    Student.find({uid: req.query.uid}, (err, student) => {
+        if (err) {
+            res.status(500);
+            return next(err);
+        }
+        return res.status(200).send(student);
+    });
+});
+
+// Read/GET all students
+studentsRouter.get('/all', (req, res, next) => {
     Student.find((err, students) => {
         if (err) {
             res.status(500);
@@ -106,6 +119,7 @@ studentsRouter.get('/:id', (req, res, next) => {
         return res.status(200).send(student);
     });
 });
+
 
 // Update/PUT a single student
 studentsRouter.put('/:id', (req, res, next) => {
